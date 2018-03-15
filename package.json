@@ -1,6 +1,8 @@
 {
-	"name": "GTM Manager",
-	"version": "0.0.1",
+	"name": "GTMManager",
+	"description": "NodeJS App for batch management Google Tag Manager containers",
+	"version": "0.0.2",
+	"repository": "https://github.com/burashka/GTM-Manager",
 	"scripts": {
 		"start": "NODE_ENV=production node ./app.js"
 	},
@@ -10,6 +12,7 @@
 		"querystring": "^0.2.0",
 		"opn": "^5.2.0",
 		"express": "^4.16.2",
-		"config": "^1.29.2"
+		"config": "^1.29.2",
+		"clone-deep": "^3.0.1"
 	}
 }

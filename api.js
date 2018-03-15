@@ -1,5 +1,7 @@
 const google = require('googleapis');
 const tagmanager = google.tagmanager('v2');
+const analytics = google.analytics('v3');
+const reporting = google.analyticsreporting('v4');
 const promisify = require('./promisify');
 
 let oAuth2Client;
@@ -72,6 +74,16 @@ const api = {
 			}
 		);
 	},
+	async createBuildVar({ type, parent }){
+		return promisify(
+			tagmanager.accounts.containers.workspaces.built_in_variables.create,
+			{
+				auth: oAuth2Client,
+				parent,
+				type
+			}
+		);
+	},
 	async createTrigger({ params, parent }){
 		return promisify(
 			tagmanager.accounts.containers.workspaces.triggers.create,
@@ -81,6 +93,70 @@ const api = {
 				resource: params
 			}
 		);
+	},
+	async createAnalytics({ accountId, params }){
+		return promisify(
+			analytics.management.webproperties.insert,
+			{
+				auth: oAuth2Client,
+				accountId,
+				resource: params
+			}
+		);
+	},
+	async getReports(params){
+		return promisify(
+			reporting.reports.batchGet,
+			{
+				auth: oAuth2Client,
+				resource: params
+			}
+		);
+	},
+	async getContainers(parent){
+        return promisify(
+            tagmanager.accounts.containers.list,
+            {
+                auth: oAuth2Client,
+                parent
+            }
+        );
+	},
+	async deleteContainer(path){
+        return promisify(
+            tagmanager.accounts.containers.delete,
+            {
+                auth: oAuth2Client,
+                path
+            }
+        );
+	},
+    async createVersion({ path, resource }){
+        return promisify(
+            tagmanager.accounts.containers.workspaces.create_version,
+            {
+                auth: oAuth2Client,
+                path,
+				resource
+            }
+        );
+    },
+    async publishContainer(path){
+        return promisify(
+            tagmanager.accounts.containers.versions.publish,
+            {
+                auth: oAuth2Client,
+                path
+            }
+        );
+    },
+	async getAnalyticsProperties(){
+        return promisify(
+            analytics.management.accountSummaries.list,
+            {
+                auth: oAuth2Client
+            }
+        );
 	}
 };
 
