@@ -6,6 +6,14 @@ const promisify = require('./promisify');
 
 let oAuth2Client;
 
+function sanitize(params){
+	["accountId", "containerId", "fingerprint", "parentFolderId", "triggerId", "firingTriggerId", "tagId"].forEach(
+		propName => delete params[propName]
+	);
+
+	return params;
+}
+
 const api = {
 	authorize(obj){
 		oAuth2Client = obj;
@@ -55,6 +63,8 @@ const api = {
 		return workspace;
 	},
 	async createTag({ params, parent }){
+		params = sanitize(params);
+
 		return promisify(
 			tagmanager.accounts.containers.workspaces.tags.create,
 			{
@@ -85,6 +95,8 @@ const api = {
 		);
 	},
 	async createTrigger({ params, parent }){
+		params = sanitize(params);
+
 		return promisify(
 			tagmanager.accounts.containers.workspaces.triggers.create,
 			{
